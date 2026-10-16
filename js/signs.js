@@ -24,6 +24,7 @@ const Signs = (() => {
   const truckSide = (x, y, s, c) => `<g transform="translate(${x} ${y}) scale(${s})" fill="${c}"><rect x="-26" y="-14" width="34" height="22" rx="1.5"/><path d="M9 -8 h9 l6 8 v8 h-15 z"/><circle cx="-16" cy="11" r="5"/><circle cx="14" cy="11" r="5"/></g>`;
   const carSide = (x, y, s, c) => `<g transform="translate(${x} ${y}) scale(${s})" fill="${c}"><path d="M-24 4 l6 -11 q2 -3 6 -3 h22 q4 0 6 3 l8 11 v6 h-48 z"/><circle cx="-14" cy="11" r="5"/><circle cx="14" cy="11" r="5"/></g>`;
   const motoSide = (x, y, s, c) => `<g transform="translate(${x} ${y}) scale(${s})"><circle cx="-14" cy="8" r="8" fill="none" stroke="${c}" stroke-width="4"/><circle cx="16" cy="8" r="8" fill="none" stroke="${c}" stroke-width="4"/><path d="M-14 8 L-3 -4 H9 L16 8" stroke="${c}" stroke-width="4" fill="none"/><path d="M-6 -6 h14 l2 -4 h-14 z M4 -12 l3 -7 h5" fill="${c}" stroke="${c}" stroke-width="2"/><circle cx="2" cy="-20" r="4" fill="${c}"/></g>`;
+  const bake = (n, col) => { const id = 'bk' + (++uid); return `<rect x="31" y="3" width="38" height="94" fill="${W}" stroke="#999" stroke-width="1.5"/><clipPath id="${id}"><rect x="31" y="3" width="38" height="94"/></clipPath><g clip-path="url(#${id})">${Array.from({ length: n }, (_, i) => `<polygon points="31,${24 + i * 28} 69,${6 + i * 28} 69,${20 + i * 28} 31,${38 + i * 28}" fill="${col || R}"/>`).join('')}</g>`; };
   const tile = inner => `<rect x="4" y="4" width="92" height="92" rx="6" fill="#555c66"/>${inner}`;
   const draw = {
     '205': () => triDown(),
@@ -159,6 +160,24 @@ const Signs = (() => {
     'M341': () => tile(`<path d="M8 50 H92" stroke="${W}" stroke-width="8" stroke-dasharray="10 7"/><path d="M50 58 V96" stroke="${W}" stroke-width="2.5"/>`),
     '238': () => blueDisc(`<g fill="${W}"><path d="M28 62 q4 -12 16 -12 h14 l8 -8 l4 -10 l4 2 l-2 8 l4 4 l-6 4 l-6 8 l2 22 h-4 l-3 -16 h-12 l-4 16 h-4 l1 -18 q-6 2 -8 8 z"/><circle cx="50" cy="28" r="5"/><path d="M46 34 h8 l2 14 h-12 z"/></g>`),
     '386': t => `<rect x="2" y="26" width="96" height="48" rx="3" fill="#7a4b2a" stroke="${W}" stroke-width="2"/>${txt(t || 'Schloss', 50, 58, 18, W, 700)}`,
+    '159': () => bake(2),
+    '162': () => bake(1),
+    '2742': n => `<rect x="4" y="8" width="92" height="84" rx="5" fill="${W}" stroke="${K}" stroke-width="2"/><circle cx="50" cy="40" r="24" fill="#999"/><circle cx="50" cy="40" r="18" fill="${W}"/>${txt(n || '30', 50, 50, 26, GR, 700)}${txt('ZONE', 50, 84, 18, GR, 800)}${stripes('<rect x="6" y="10" width="88" height="80"/>', '#333')}`,
+    '2902': () => `<rect x="4" y="8" width="92" height="84" rx="5" fill="${W}" stroke="${K}" stroke-width="2"/><circle cx="50" cy="40" r="24" fill="#999"/><circle cx="50" cy="40" r="18" fill="#c9c9c9"/><line x1="37" y1="27" x2="63" y2="53" stroke="#999" stroke-width="5"/>${txt('ZONE', 50, 84, 18, GR, 800)}${stripes('<rect x="6" y="10" width="88" height="80"/>', '#333')}`,
+    '3312': () => blueSquare(`<path d="M50 86 V50" stroke="${W}" stroke-width="10"/><path d="M50 50 Q50 30 70 26 M50 50 Q50 30 30 26" stroke="${W}" stroke-width="7" fill="none"/><rect x="18" y="22" width="64" height="6" fill="${W}"/><line x1="10" y1="90" x2="90" y2="10" stroke="${R}" stroke-width="8"/>`),
+    '3571': () => blueSquare(`<rect x="42" y="36" width="16" height="54" fill="${W}"/><rect x="24" y="16" width="52" height="20" fill="${R}"/>${walker(32, 30, 0.42, W)}${bicycle(68, 26, 0.32, W, 5)}`),
+    '2442': () => `<rect x="4" y="8" width="92" height="84" rx="5" fill="${W}" stroke="${K}" stroke-width="2"/><circle cx="50" cy="40" r="25" fill="#999"/>${bicycle(50, 44, 0.6, W, 4.5)}${txt('Fahrradstraße', 50, 82, 13, GR, 700)}${stripes('<rect x="6" y="10" width="88" height="80"/>', '#333')}`,
+    '263': n => ringRed(`<rect x="28" y="40" width="44" height="6" fill="${K}"/><circle cx="32" cy="46" r="7" fill="${K}"/><circle cx="68" cy="46" r="7" fill="${K}"/>${txt((n || '8') + ' t', 50, 74, 20, K, 700)}`),
+    'M340': () => tile(`<path d="M50 4 V96" stroke="${W}" stroke-width="5" stroke-dasharray="20 14"/>`),
+    '365': () => blueSquare(`<rect x="16" y="14" width="68" height="64" fill="${W}"/><rect x="32" y="26" width="24" height="44" rx="2" fill="${K}"/><rect x="36" y="31" width="16" height="10" fill="${W}"/><path d="M56 34 h8 v26 q0 4 4 4 v-30 l-6 -6" stroke="${K}" stroke-width="3" fill="none"/>`),
+    '381': n => blueSquare(`${txt(n || '130', 50, 64, 38, W, 800)}<line x1="10" y1="90" x2="90" y2="10" stroke="${R}" stroke-width="7"/>`),
+    '406': n => `<rect x="24" y="30" width="52" height="40" rx="6" fill="${B}" stroke="${W}" stroke-width="3"/>${txt(n || '12', 50, 61, 26, W, 800)}`,
+    '410': n => `<rect x="10" y="28" width="80" height="44" rx="5" fill="${G}" stroke="${W}" stroke-width="3"/>${txt('E ' + (n || '45'), 50, 61, 26, W, 800)}`,
+    '600': () => `<rect x="10" y="44" width="80" height="16" fill="${W}" stroke="#666" stroke-width="1"/>${[0, 1, 2, 3, 4].map(i => `<rect x="${10 + i * 16}" y="44" width="8" height="16" fill="${R}"/>`).join('')}<rect x="14" y="60" width="4" height="34" fill="#666"/><rect x="82" y="60" width="4" height="34" fill="#666"/>`,
+    '605': () => { const id = 'lb' + (++uid); return `<rect x="34" y="3" width="32" height="94" fill="${W}" stroke="#999" stroke-width="1.5"/><clipPath id="${id}"><rect x="34" y="3" width="32" height="94"/></clipPath><g clip-path="url(#${id})">${[0, 1, 2, 3, 4].map(i => `<polygon points="34,${-6 + i * 22} 66,${8 + i * 22} 66,${19 + i * 22} 34,${5 + i * 22}" fill="${R}"/>`).join('')}</g>`; },
+    '625': () => `<rect x="4" y="24" width="92" height="52" fill="${W}" stroke="#999" stroke-width="1.5"/>${[0, 1, 2].map(i => `<polygon points="${16 + i * 26},30 ${34 + i * 26},50 ${16 + i * 26},70 ${26 + i * 26},70 ${44 + i * 26},50 ${26 + i * 26},30" fill="${R}"/>`).join('')}`,
+    '721': () => `<rect x="10" y="22" width="80" height="56" rx="4" fill="${K}"/>${bicycle(36, 54, 0.45, '#2fbf4a', 4.5)}<path d="M54 50 H74" stroke="#2fbf4a" stroke-width="7"/><polygon points="70,40 84,50 70,60" fill="#2fbf4a"/>`,
+    '316': () => blueSquare(`${txt('P+R', 50, 64, 38, W, 800)}`),
     '270': () => `<rect x="6" y="6" width="88" height="88" rx="5" fill="${W}" stroke="${K}" stroke-width="2"/><circle cx="50" cy="40" r="25" fill="none" stroke="${R}" stroke-width="5"/>${txt('Umwelt', 50, 46, 15, K, 700)}${txt('ZONE', 50, 84, 18, K, 800)}`,
   };
 
@@ -277,11 +296,35 @@ const Signs = (() => {
     'M341': 'Road marking: give-way line · Wartelinie (Zeichen 341)',
     '238': 'Bridleway · Reitweg (Zeichen 238)',
     '386': 'Tourist sign · Touristischer Hinweis (Zeichen 386)',
+    '159': 'Two-stripe marker, about 160 m before a level crossing (Zeichen 159)',
+    '162': 'One-stripe marker, about 80 m before a level crossing (Zeichen 162)',
+    '2742': 'End of speed limit zone · Ende Tempo-30-Zone (Zeichen 274.2)',
+    '2902': 'End of restricted stopping zone (Zeichen 290.2)',
+    '3312': 'End of expressway · Ende der Kraftfahrstraße (Zeichen 331.2)',
+    '3571': 'Dead end, open to pedestrians and cyclists (Zeichen 357.1)',
+    '2442': 'End of cycle street (Zeichen 244.2)',
+    '263': 'Axle load limit · Tatsächliche Achslast (Zeichen 263)',
+    'M340': 'Road marking: broken lane line · Leitlinie (Zeichen 340)',
+    '365': 'Petrol station · Tankstelle (Zeichen 365)',
+    '381': 'End of recommended speed (Zeichen 381)',
+    '406': 'Motorway junction or exit number (Zeichen 406)',
+    '410': 'European road number · Europastraße (Zeichen 410)',
+    '600': 'Barrier · Absperrschranke (Zeichen 600)',
+    '605': 'Guide beacon · Leitbake (Zeichen 605)',
+    '625': 'Chevron board in bends · Richtungstafel (Zeichen 625)',
+    '721': 'Green arrow for cyclists only (Zeichen 721)',
+    '316': 'Park and Ride (Zeichen 316)',
     '270': 'Low emission zone · Umweltzone (Zeichen 270.1)',
   };
 
   function parse(code) { const i = String(code).indexOf('-'); return i < 0 ? { c: String(code) } : { c: String(code).slice(0, i), arg: String(code).slice(i + 1) }; }
-  function inner(code) { const { c, arg } = parse(code); return draw[c] ? draw[c](arg) : ''; }
+  const MIRROR = { 103: 1, 105: 1, 121: 1, 209: 1, 211: 1, 214: 1 };
+  function inner(code) {
+    const { c, arg } = parse(code);
+    if (!draw[c]) return '';
+    if (arg === 'l' && MIRROR[c]) return `<g transform="translate(100 0) scale(-1 1)">${draw[c]()}</g>`;
+    return draw[c](arg);
+  }
   function svg(code, cls = 'sign') {
     const { c } = parse(code);
     return `<svg class="${cls}" viewBox="0 0 100 100" role="img" aria-label="${names[c] || 'Traffic sign'}">${inner(code)}</svg>`;
