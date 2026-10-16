@@ -54,12 +54,18 @@ const Scene = (() => {
     }
     return s;
   }
-  function motorway() {
+  function motorway(o) {
     let s = base();
     s += `<rect x="10" y="0" width="100" height="400" fill="${C.road}"/>` + dash(60, 0, 60, 400) + solid(14, 0, 14, 400, 2) + solid(106, 0, 106, 400, 2);
     s += `<line x1="128" y1="0" x2="128" y2="400" stroke="#b9bec4" stroke-width="3"/><line x1="134" y1="0" x2="134" y2="400" stroke="#b9bec4" stroke-width="3"/>`;
     s += `<rect x="150" y="0" width="128" height="400" fill="${C.road}"/><rect x="250" y="0" width="28" height="400" fill="${C.road2}"/>`;
     s += solid(154, 0, 154, 400, 2) + dash(200, 0, 200, 400) + solid(250, 0, 250, 400, 3) + solid(275, 0, 275, 400, 2);
+    if (o.ramp) {
+      s += `<path d="M336 420 C336 340 264 336 264 262" stroke="${C.road}" stroke-width="28" fill="none"/>`;
+      s += `<polygon points="250,70 250,120 278,120" fill="${C.road}"/><rect x="250" y="119" width="28" height="160" fill="${C.road}"/>`;
+      s += `<line x1="250" y1="120" x2="250" y2="400" stroke="${C.road}" stroke-width="4"/><line x1="250" y1="80" x2="250" y2="300" stroke="${C.line}" stroke-width="4" stroke-dasharray="8 6"/>`;
+      s += `<line x1="250" y1="70" x2="278" y2="120" stroke="${C.line}" stroke-width="2"/>` + solid(278, 120, 278, 270, 2);
+    }
     return s;
   }
   function roundabout(o) {
@@ -86,6 +92,10 @@ const Scene = (() => {
     moto: c => `<rect x="-2.6" y="-12" width="5.2" height="24" rx="2.4" fill="#222"/><ellipse cx="0" cy="1" rx="6" ry="4.6" fill="${c}"/><circle cx="0" cy="-2" r="3.6" fill="#111" stroke="#ddd" stroke-width=".8"/><circle cx="0" cy="-12" r="1.6" fill="#fff6c4"/>`,
     ped: c => `<ellipse cx="0" cy="0" rx="6.2" ry="4.4" fill="${c}"/><circle cx="0" cy="0" r="3.3" fill="#3b2a1e"/>`,
     child: c => `<g transform="scale(.75)"><ellipse cx="0" cy="0" rx="6.2" ry="4.4" fill="${c}"/><circle cx="0" cy="0" r="3.4" fill="#5a3b1e"/></g>`,
+    cone: () => `<circle r="4.8" fill="#f57c00" stroke="#fff" stroke-width="1.8"/><circle r="1.6" fill="#fff"/>`,
+    warn: () => `<polygon points="0,-7 6.5,5 -6.5,5" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linejoin="round"/>`,
+    tractor: c => `<rect x="-8" y="-20" width="16" height="15" rx="2" fill="${c}"/><rect x="-7" y="-5" width="14" height="14" rx="2" fill="${c}" stroke="rgba(0,0,0,.35)"/><rect x="-5" y="-3" width="10" height="7" rx="1" fill="#1c2833"/><rect x="-13" y="2" width="5" height="16" rx="2" fill="#222"/><rect x="8" y="2" width="5" height="16" rx="2" fill="#222"/><rect x="-11" y="-19" width="3.4" height="9" rx="1.5" fill="#222"/><rect x="7.6" y="-19" width="3.4" height="9" rx="1.5" fill="#222"/><circle cx="0" cy="-2" r="2" fill="#ffb300"/>${lights(8, 20)}${inds(7.6, 18.4)}`,
+    police: () => `<rect x="-9" y="-17" width="18" height="34" rx="4.5" fill="#eef1f3" stroke="rgba(0,0,0,.35)" stroke-width=".8"/><rect x="-9" y="-2" width="18" height="6" fill="#1f6b4a"/><rect x="-7" y="-10" width="14" height="7" rx="2" fill="#1c2833"/><rect class="siren s1" x="-7" y="-3.5" width="6" height="3" rx="1"/><rect class="siren s2" x="1" y="-3.5" width="6" height="3" rx="1"/><rect x="-7" y="7" width="14" height="5" rx="1.5" fill="#1c2833"/>${lights(9, 17)}${inds(8.6, 15.4)}`,
     ball: () => `<circle r="4.6" fill="#e63946" stroke="#fff" stroke-width="1.6"/>`,
     deer: () => `<ellipse cx="0" cy="5" rx="6.5" ry="12" fill="#8a5a2b"/><ellipse cx="0" cy="-9" rx="3.6" ry="5.5" fill="#7a4e24"/><circle cx="-1.8" cy="-12.5" r="1.3" fill="#eaffb0"/><circle cx="1.8" cy="-12.5" r="1.3" fill="#eaffb0"/>`,
     train: () => `<g>${[0, 1, 2, 3].map(i => `<rect x="-13" y="${-100 + i * 50}" width="26" height="47" rx="5" fill="#c62828" stroke="rgba(0,0,0,.4)"/><rect x="-9" y="${-94 + i * 50}" width="18" height="35" rx="2" fill="rgba(255,255,255,.22)"/>`).join('')}</g>`,
@@ -136,6 +146,7 @@ const Scene = (() => {
       svg += L(sc.opt || {});
       (sc.signs || []).forEach(g => { svg += `<line x1="${g.x}" y1="${g.y}" x2="${g.x}" y2="${g.y + g.s * 0.9}" stroke="#555" stroke-width="2"/>` + Signs.nested(g.c, g.x, g.y, g.s); });
       (sc.flash || []).forEach((f, i) => { svg += `<rect x="${f.x - 13}" y="${f.y - 7}" width="26" height="14" rx="7" fill="#222"/><g class="flashg" id="${this.id}f${i}"><circle class="flash f1" cx="${f.x - 6}" cy="${f.y}" r="4.6"/><circle class="flash f2" cx="${f.x + 6}" cy="${f.y}" r="4.6"/></g>`; });
+      (sc.lights || []).forEach((l, i) => { svg += `<g transform="translate(${l.x} ${l.y}) rotate(${l.r || 0})"><rect x="-6" y="-16" width="12" height="32" rx="3" fill="#1b1d21" stroke="#555" stroke-width="1"/>${['r', 'y', 'g'].map((c, j) => `<circle id="${this.id}l${i}${c}" cx="0" cy="${-9 + j * 9}" r="3.6" fill="#3a3d42"/>`).join('')}</g>`; });
       if (sc.night) svg += `<rect width="400" height="400" fill="#050912" opacity=".66"/>`;
       svg += `<g class="paths">${sc.actors.map((a, i) => a.p ? `<path id="${this.id}p${i}" d="${a.p}" fill="none" stroke="none"/>` : '').join('')}</g>`;
       svg += sc.actors.map((a, i) => {
@@ -145,6 +156,8 @@ const Scene = (() => {
         const shape = (SHAPES[a.ty] || SHAPES.car)(a.c || '#888');
         return `<g class="actor ${a.you ? 'you' : ''}" id="${this.id}a${i}">${halo}${beam}${shape}${door}</g>`;
       }).join('');
+      if (sc.fog) svg += `<defs><linearGradient id="${this.id}fog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dfe4e8" stop-opacity=".96"/><stop offset=".55" stop-color="#dfe4e8" stop-opacity=".82"/><stop offset="1" stop-color="#dfe4e8" stop-opacity=".2"/></linearGradient></defs><rect width="400" height="400" fill="url(#${this.id}fog)"/>`;
+      if (sc.rain) svg += `<defs><pattern id="${this.id}rain" width="24" height="40" patternUnits="userSpaceOnUse"><line x1="6" y1="0" x2="2" y2="12" stroke="#cfe3ff" stroke-width="1.3" opacity=".7"/><line x1="18" y1="20" x2="14" y2="32" stroke="#cfe3ff" stroke-width="1.3" opacity=".7"/></pattern></defs><rect width="400" height="400" fill="#1d2a3a" opacity=".28"/><rect class="rainfx" width="400" height="400" fill="url(#${this.id}rain)"/>`;
       svg += sc.actors.map((a, i) => a.you ? `<g class="you-tag" id="${this.id}t${i}"><rect x="-17" y="-8" width="34" height="15" rx="7.5"/><text y="3.6" text-anchor="middle">YOU</text></g>` : (a.label ? `<g class="you-tag other" id="${this.id}t${i}"><rect x="-${a.label.length * 3.6 + 7}" y="-8" width="${a.label.length * 7.2 + 14}" height="15" rx="7.5"/><text y="3.6" text-anchor="middle">${a.label}</text></g>` : '')).join('');
 
       const controls = this.mode === 'picture'
@@ -200,6 +213,12 @@ const Scene = (() => {
           A.door.setAttribute('transform', `rotate(${(f * 62).toFixed(1)} -9.5 -6)`);
         }
       }
+      (this.sc.lights || []).forEach((l, i) => {
+        const st = (l.seq.filter(q => q[0] <= t + 1e-6).pop() || l.seq[0])[1];
+        const on = { r: '#ff3b30', y: '#ffb300', g: '#34c759' };
+        ['r', 'y', 'g'].forEach(c => { const el = this.svg.querySelector('#' + this.id + 'l' + i + c); if (el) el.setAttribute('fill', st.includes(c) ? on[c] : '#3a3d42'); });
+      });
+      if (this.sc.rain) { const r = this.svg.querySelector('#' + this.id + 'rain'); if (r) r.setAttribute('patternTransform', `translate(${(-t * 40) % 24} ${(t * 260) % 40})`); }
       (this.sc.flash || []).forEach((f, i) => {
         const g = this.svg.querySelector('#' + this.id + 'f' + i);
         if (g) g.style.display = f.until != null && t > f.until ? 'none' : '';
