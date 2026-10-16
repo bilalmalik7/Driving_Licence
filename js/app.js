@@ -185,6 +185,7 @@
     else if (r.name === 'mistakes') startMistakes();
     else if (r.name === 'play') SESSION ? renderPractice() : go('home');
     else if (r.name === 'exam') renderExamEntry();
+    else if (r.name === 'guide') Guide.render(view, r.arg);
     else if (r.name === 'plan') renderPlan();
     else if (r.name === 'rules') renderRules();
     else if (r.name === 'bank') renderBank(r.arg);

@@ -9,6 +9,8 @@ A gamified trainer for the German **Class B** driving theory test (TÜV | DEKRA)
 - **822 original questions** in 6 levels: Right of Way, Danger Sense, Traffic Flow, Sign Hunter, Driver & Planet, Class B Garage
 - **113 animated road scenes** drawn in SVG (traffic lights, fog, rain, night, motorways, roadworks, tunnels), including 44 right-of-way junction puzzles: play the clip to unlock the answers, then watch the solution replay
 - **Mock exam:** 30 questions (20 Grundstoff + 10 Zusatzstoff B), 45 minutes, 2–5 points per question, no partial credit, fail at more than 10 error points or two wrong 5-pointers
+- **Licence roadmap for Osnabrück** (`#guide`): two paths, for people with a Pakistani licence and for people with no licence, with a week-by-week timeline, checklists, documents, places (with map links), driving schools near 49090 and the cost of every phase
+- **Installable app**: add it to the home screen on Android or iPhone; it works offline (`manifest.webmanifest`, `sw.js`)
 - **21-day plan**, XP, levels, streaks, badges and a mistakes list
 - Progress is stored in the browser (`localStorage`); no server or account needed
 
@@ -40,7 +42,10 @@ js/questions2.js  question batch 2 (100) with 20 more animated scenes
 js/questions3.js  question batch 3 (100) with 13 more animated scenes
 js/questions4.js  batch 4 (100) and the Junction() puzzle builder
 js/questions5-8.js  batches 5–8 (100 each)
+js/guide.js       licence roadmap (paths, phases, places, costs, apps)
 js/app.js         routing, practice sessions, mock exam, progress and gamification
+sw.js             service worker (offline cache; bump VERSION after changing files)
+manifest.webmanifest, icons/  installable app
 ```
 
 ## Adding questions

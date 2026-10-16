@@ -10,6 +10,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&family=Overpass+Mono:wght@500;700&display=swap">
 <link rel="stylesheet" href="css/style.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2b3036">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="FS Quest">
 </head>
 <body>
 <header class="hud">
@@ -19,7 +24,7 @@
       <span class="brand-name">Führerschein<b>Quest</b></span>
     </a>
     <nav class="nav" aria-label="Main">
-      <a href="#home">Route</a><a href="#plan">Plan</a><a href="#rules">Rules</a><a href="#bank">Questions</a><a href="#exam" class="nav-boss">Mock exam</a>
+      <a href="#home">Route</a><a href="#guide">Licence</a><a href="#plan">Plan</a><a href="#rules">Rules</a><a href="#bank">Questions</a><a href="#exam" class="nav-boss">Mock exam</a>
     </nav>
     <div class="player" aria-label="Your level">
       <div class="lvl"><b id="hud-level">Lv 1</b><span id="hud-rank">Fahrschüler</span></div>
@@ -48,6 +53,13 @@
 <script src="js/questions6.js"></script>
 <script src="js/questions7.js"></script>
 <script src="js/questions8.js"></script>
+<script src="js/guide.js"></script>
 <script src="js/app.js"></script>
+<script>
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); window.__fqInstall = e; const b = document.getElementById('g-install'); if (b) b.hidden = false; });
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+    window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+  }
+</script>
 </body>
 </html>
