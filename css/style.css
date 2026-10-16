@@ -322,6 +322,8 @@ button { font: inherit; color: inherit; }
 .scene .siren.s2 { fill: #2f7bff; animation: siren .5s steps(1, end) infinite .25s; }
 @keyframes siren { 0% { opacity: 1; } 50% { opacity: .15; } }
 .scene .flash { fill: #ff2626; }
+.scene .beacon { fill: #ffb300; animation: siren .6s steps(1, end) infinite; }
+.scene .beacon.b2 { animation-delay: .3s; }
 .scene .flash.f1 { animation: siren .9s steps(1, end) infinite; }
 .scene .flash.f2 { animation: siren .9s steps(1, end) infinite .45s; }
 .scene .you-halo { fill: none; stroke: #f2b705; stroke-width: 2.5; stroke-dasharray: 5 4; opacity: .9; animation: halo 2.4s linear infinite; transform-box: fill-box; transform-origin: center; }
