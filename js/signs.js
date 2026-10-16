@@ -104,7 +104,13 @@ const Signs = (() => {
     '3302': () => blueSquare(`<path d="M30 86 C36 60 40 40 44 18 M70 86 C64 60 60 40 56 18" stroke="${W}" stroke-width="7" fill="none"/><path d="M18 32 Q50 14 82 32" stroke="${W}" stroke-width="6" fill="none"/><line x1="10" y1="90" x2="90" y2="10" stroke="${R}" stroke-width="8"/>`),
     '1002': (a = 'sl') => { const E = { s: [50, 74], l: [14, 50], t: [50, 26], r: [86, 50] }; const p = a.split('').map(c => E[c]); return `<rect x="4" y="22" width="92" height="56" rx="3" fill="${W}" stroke="${K}" stroke-width="2"/><path d="M50 26 V74 M14 50 H86" stroke="${K}" stroke-width="3"/><path d="M${p[0][0]} ${p[0][1]} L50 50 L${p[1][0]} ${p[1][1]}" stroke="${K}" stroke-width="9" fill="none" stroke-linejoin="round"/>`; },
     '1000': () => `<rect x="4" y="22" width="92" height="56" rx="3" fill="${W}" stroke="${K}" stroke-width="2"/>${bicycle(50, 54, 0.6, K, 4)}<path d="M18 34 H44 M56 34 H82" stroke="${K}" stroke-width="3"/><polygon points="14,34 22,29 22,39" fill="${K}"/><polygon points="86,34 78,29 78,39" fill="${K}"/>`,
-    'Z': t => `<rect x="2" y="26" width="96" height="48" rx="3" fill="${W}" stroke="${K}" stroke-width="2"/>${txt(t || '', 50, 58, (t || '').length > 9 ? 13 : 18, K, 700)}`,
+    'Z': (t = '') => {
+      const w = t.split(' '); let lines = [t];
+      if (t.length > 11 && w.length > 1) { let best = null; for (let k = 1; k < w.length; k++) { const a = w.slice(0, k).join(' '), b = w.slice(k).join(' '), m = Math.max(a.length, b.length); if (!best || m < best[2]) best = [a, b, m]; } lines = best.slice(0, 2); }
+      const longest = Math.max(...lines.map(l => l.length)), size = Math.min(18, 88 / (longest * 0.5));
+      const ys = lines.length === 1 ? [50 + size * 0.35] : [47, 47 + size * 1.05];
+      return `<rect x="2" y="26" width="96" height="48" rx="3" fill="${W}" stroke="${K}" stroke-width="2"/>${lines.map((l, n) => txt(l, 50, ys[n].toFixed(1), size.toFixed(1), K, 700)).join('')}`;
+    },
     '115': () => triUp(`<polygon points="27,78 46,40 46,78" fill="${K}"/><g fill="${K}"><circle cx="57" cy="50" r="4"/><circle cx="63" cy="63" r="5"/><circle cx="55" cy="73" r="3.5"/></g>`),
     '116': () => triUp(`${carSide(46, 66, 0.55, K)}<g fill="${K}"><circle cx="64" cy="58" r="2"/><circle cx="69" cy="64" r="2"/><circle cx="66" cy="70" r="2"/><circle cx="72" cy="72" r="1.6"/></g>`),
     '117': () => triUp(`<rect x="33" y="40" width="3" height="38" fill="${K}"/><polygon points="36,42 70,48 70,58 36,57" fill="${K}"/>`),
@@ -151,6 +157,8 @@ const Signs = (() => {
     'M298': () => tile(`<polygon points="50,10 82,90 18,90" fill="none" stroke="${W}" stroke-width="3"/><clipPath id="m298"><polygon points="50,10 82,90 18,90"/></clipPath><g clip-path="url(#m298)" stroke="${W}" stroke-width="4">${[0, 1, 2, 3, 4, 5, 6, 7].map(i => `<line x1="${0 + i * 14}" y1="96" x2="${40 + i * 14}" y2="4"/>`).join('')}</g>`),
     'M299': () => tile(`<path d="M12 72 L22 30 L32 72 L42 30 L52 72 L62 30 L72 72 L82 30 L90 60" stroke="${W}" stroke-width="3.5" fill="none" stroke-linejoin="round"/>`),
     'M341': () => tile(`<path d="M8 50 H92" stroke="${W}" stroke-width="8" stroke-dasharray="10 7"/><path d="M50 58 V96" stroke="${W}" stroke-width="2.5"/>`),
+    '238': () => blueDisc(`<g fill="${W}"><path d="M28 62 q4 -12 16 -12 h14 l8 -8 l4 -10 l4 2 l-2 8 l4 4 l-6 4 l-6 8 l2 22 h-4 l-3 -16 h-12 l-4 16 h-4 l1 -18 q-6 2 -8 8 z"/><circle cx="50" cy="28" r="5"/><path d="M46 34 h8 l2 14 h-12 z"/></g>`),
+    '386': t => `<rect x="2" y="26" width="96" height="48" rx="3" fill="#7a4b2a" stroke="${W}" stroke-width="2"/>${txt(t || 'Schloss', 50, 58, 18, W, 700)}`,
     '270': () => `<rect x="6" y="6" width="88" height="88" rx="5" fill="${W}" stroke="${K}" stroke-width="2"/><circle cx="50" cy="40" r="25" fill="none" stroke="${R}" stroke-width="5"/>${txt('Umwelt', 50, 46, 15, K, 700)}${txt('ZONE', 50, 84, 18, K, 800)}`,
   };
 
@@ -267,6 +275,8 @@ const Signs = (() => {
     'M298': 'Road marking: hatched area · Sperrfläche (Zeichen 298)',
     'M299': 'Road marking: zigzag line · Grenzmarkierung (Zeichen 299)',
     'M341': 'Road marking: give-way line · Wartelinie (Zeichen 341)',
+    '238': 'Bridleway · Reitweg (Zeichen 238)',
+    '386': 'Tourist sign · Touristischer Hinweis (Zeichen 386)',
     '270': 'Low emission zone · Umweltzone (Zeichen 270.1)',
   };
 
