@@ -6,8 +6,8 @@ A gamified trainer for the German **Class B** driving theory test (TÜV | DEKRA)
 
 ## Features
 
-- **322 original questions** in 6 levels: Right of Way, Danger Sense, Traffic Flow, Sign Hunter, Driver & Planet, Class B Garage
-- **54 animated road scenes** drawn in SVG (traffic lights, fog, rain, night, motorway slip roads and roadworks): play the clip to unlock the answers, then watch the solution replay
+- **822 original questions** in 6 levels: Right of Way, Danger Sense, Traffic Flow, Sign Hunter, Driver & Planet, Class B Garage
+- **113 animated road scenes** drawn in SVG (traffic lights, fog, rain, night, motorways, roadworks, tunnels), including 44 right-of-way junction puzzles: play the clip to unlock the answers, then watch the solution replay
 - **Mock exam:** 30 questions (20 Grundstoff + 10 Zusatzstoff B), 45 minutes, 2–5 points per question, no partial credit, fail at more than 10 error points or two wrong 5-pointers
 - **21-day plan**, XP, levels, streaks, badges and a mistakes list
 - Progress is stored in the browser (`localStorage`); no server or account needed
@@ -38,6 +38,8 @@ js/scenes.js      top-down traffic scene engine (layouts, actors, keyframes)
 js/questions.js   levels, animated scenes and question batch 1 (122)
 js/questions2.js  question batch 2 (100) with 20 more animated scenes
 js/questions3.js  question batch 3 (100) with 13 more animated scenes
+js/questions4.js  batch 4 (100) and the Junction() puzzle builder
+js/questions5-8.js  batches 5–8 (100 each)
 js/app.js         routing, practice sessions, mock exam, progress and gamification
 ```
 
@@ -54,4 +56,16 @@ mc('V01', 'vorfahrt', 5, 'Question text?',
 num('B01', 'verhalten', 3, 'Number question?', 50, 'km/h', 'Explanation.');
 ```
 
-`sc` attaches an animated scene, `sg` shows traffic signs by their Zeichen number, and `law` cites the rule.
+`sc` attaches an animated scene, `sg` shows traffic signs by their Zeichen number (about 150 are drawn in `js/signs.js`; `Z-<text>` draws an additional plate), and `law` cites the rule.
+
+Right-of-way picture puzzles can be described instead of animated by hand:
+
+```js
+SC.V57 = Junction({
+  signs: { S: '306', N: '306', W: '205', E: '205' },   // optional; bent: ['S', 'W'] adds the bent-priority plate
+  v: [{ arm: 'S', m: 'l', go: 1, c: BLUE, you: true },  // arm S/W/N/E, manoeuvre s/l/r, go = order group
+      { arm: 'N', m: 's', go: 0, c: YEL }],
+  q: ['caption 1', 'caption 2', 'caption 3'],
+  sol: ['caption for group 0', 'caption for group 1'],
+});
+```
