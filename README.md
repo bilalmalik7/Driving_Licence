@@ -6,8 +6,8 @@ A gamified trainer for the German **Class B** driving theory test (TÜV | DEKRA)
 
 ## Features
 
-- **222 original questions** in 6 levels: Right of Way, Danger Sense, Traffic Flow, Sign Hunter, Driver & Planet, Class B Garage
-- **41 animated road scenes** drawn in SVG (traffic lights, fog, rain, night, motorway slip roads and roadworks): play the clip to unlock the answers, then watch the solution replay
+- **322 original questions** in 6 levels: Right of Way, Danger Sense, Traffic Flow, Sign Hunter, Driver & Planet, Class B Garage
+- **54 animated road scenes** drawn in SVG (traffic lights, fog, rain, night, motorway slip roads and roadworks): play the clip to unlock the answers, then watch the solution replay
 - **Mock exam:** 30 questions (20 Grundstoff + 10 Zusatzstoff B), 45 minutes, 2–5 points per question, no partial credit, fail at more than 10 error points or two wrong 5-pointers
 - **21-day plan**, XP, levels, streaks, badges and a mistakes list
 - Progress is stored in the browser (`localStorage`); no server or account needed
@@ -37,12 +37,13 @@ js/signs.js       German traffic signs drawn as SVG
 js/scenes.js      top-down traffic scene engine (layouts, actors, keyframes)
 js/questions.js   levels, animated scenes and question batch 1 (122)
 js/questions2.js  question batch 2 (100) with 20 more animated scenes
+js/questions3.js  question batch 3 (100) with 13 more animated scenes
 js/app.js         routing, practice sessions, mock exam, progress and gamification
 ```
 
 ## Adding questions
 
-Questions are plain data in `js/questions.js` and `js/questions2.js` (new batches push into `QUESTIONS` and add scenes to `SC`):
+Questions are plain data in `js/questions*.js` (new batches push into `QUESTIONS` and add scenes to `SC`):
 
 ```js
 mc('V01', 'vorfahrt', 5, 'Question text?',
